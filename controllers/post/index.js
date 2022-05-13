@@ -39,3 +39,44 @@ export const createPost = async (req, res) => {
         })
     }
 }
+
+export const getPosts = async (req, res) => {
+    try {
+        const posts = await Post.find({})
+
+        return res.status(200).json({
+            messge: 'Posts fetched successfully',
+            data: posts,
+            success: true
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message: 'Somthing went wrong',
+            success: false
+        })
+    }
+}
+
+export const getPostDetails = async (req, res) => {
+    const { _id } = req.params;
+
+    try {
+        const post = await Post.findOne({ _id }).populate('seller');
+
+        if (!post) return res.status(400).json({
+            message: 'Post not found',
+            success: false
+        })
+
+        return res.status(200).json({
+            message: 'Post details fetched successfully',
+            data: post,
+            success: true
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message: 'Somthing went wrong',
+            success: false
+        })
+    }
+}
