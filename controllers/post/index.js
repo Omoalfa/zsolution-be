@@ -80,3 +80,29 @@ export const getPostDetails = async (req, res) => {
         })
     }
 }
+
+export const deletePost = async (req, res) => {
+    const { _id } = req.params;
+    const user = req.user;
+
+    try {
+        const post = await Post.find({ _id, seller: user._id });
+
+        if (!post) res.status(400).json({
+            message: 'Post either does not exist or not yours',
+            success: false
+        })
+
+        await Post.deleteOne(post);
+
+        return res.status(200).json({
+            message: 'Post deleted successfully',
+            success: true
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message: 'Somthing went wrong',
+            success: false
+        })
+    }
+}
