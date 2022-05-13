@@ -4,6 +4,7 @@ import cors from 'cors'
 import { config } from 'dotenv'
 import routes from "./routes";
 import mongoose from "mongoose";
+import fileUpload from 'express-fileupload';
 
 config()
 
@@ -15,6 +16,27 @@ app.use(cors())
 
 app.use(bodyParser.json({ limit: '10mb' }))
 app.use(bodyParser.urlencoded({ extended: true }))
+
+app.use(
+    fileUpload({
+      useTempFiles: true,
+      tempFileDir: './temp',
+      abortOnLimit: true,
+      limits: {
+        fileSize: 5 * 1024 * 1024
+      },
+      fileFilter: (req, file, cb) => {
+        if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+          cb(null, true)
+          return
+        } else {
+          cb(new Error('File type is not supported', false))
+          return
+        }
+      }
+    })
+  )
+  
 
 app.use('/api', routes)
 
