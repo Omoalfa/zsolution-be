@@ -18,7 +18,13 @@ const PostSchema = new Schema({
         type: String,
         required: true
     },
-    img: String,
+    img: [String],
+    price: {
+        type: Number,
+        min: 1,
+        nullable: false
+    },
+    description: String,
     seller: {
         type: Schema.Types.ObjectId,
         ref: 'Users'

@@ -9,11 +9,11 @@ export const createUserValidation = async (req, res, next) => {
         password: Joi.string().min(8).required()
     })
 
-    const { errors } = userSchema.validate(req.body);
+    const { error } = userSchema.validate(req.body);
 
-    if (errors) return res.status(400).json({
+    if (error) return res.status(400).json({
         message: 'Validation error',
-        errors,
+        error,
         success: false
     })
 
@@ -38,11 +38,11 @@ export const userLoginValidation = async (req, res, next) => {
         password: Joi.string().min(8).required()
     })
 
-    const { errors } = userSchema.validate(req.body);
+    const { error } = userSchema.validate(req.body);
 
-    if (errors) return res.status(400).json({
+    if (error) return res.status(400).json({
         message: 'Validation error',
-        errors,
+        error,
         success: false
     })
 
